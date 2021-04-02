@@ -1,19 +1,19 @@
-import { extendType, intArg, nonNull, objectType, stringArg } from 'nexus'
+import { extendType, intArg, objectType, stringArg } from 'nexus'
 
 export const Post = objectType({
 	name: 'Post',
 	definition(t) {
-		t.nonNull.int('id')
-		t.nonNull.string('title')
-		t.nonNull.datetime('createdAt')
-		t.nonNull.datetime('updatedAt')
+		t.int('id')
+		t.string('title')
+		t.datetime('createdAt')
+		t.datetime('updatedAt')
 	},
 })
-
+ 
 export const PostQuery = extendType({
 	type: 'Query',
 	definition(t) {
-		t.nonNull.list.field('posts', {
+		t.list.field('posts', {
 			type: 'Post',
 			resolve(_root, _args, ctx) {
 				return ctx.db.post.findMany()
@@ -25,10 +25,10 @@ export const PostQuery = extendType({
 export const PostMutation = extendType({
 	type: 'Mutation',
 	definition(t) {
-		t.nonNull.field('createPost', {
+		t.field('createPost', {
 			type: 'Post',
 			args: {
-				title: nonNull(stringArg()),
+				title: stringArg(),
 			},
 			resolve(_root, args, ctx) {
 				const post = {
@@ -38,21 +38,21 @@ export const PostMutation = extendType({
 			}
 		})
 
-		t.nonNull.field('updatePost', {
+		t.field('updatePost', {
 			type: 'Post',
 			args: {
-				id: nonNull(intArg()),
-				title: nonNull(stringArg()),
+				id: intArg(),
+				title: stringArg(),
 			},
 			resolve(_root, args, ctx) {
 				return ctx.db.post.update({ where: { id: args.id }, data: { title: args.title } })
 			}
 		})
 
-		t.nonNull.field('deletePost', {
+		t.field('deletePost', {
 			type: 'Post',
 			args: {
-				id: nonNull(intArg()),
+				id: intArg(),
 			},
 			resolve(_root, args, ctx) {
 				return ctx.db.post.delete({ where: { id: args.id } })

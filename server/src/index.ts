@@ -13,10 +13,18 @@ export const schema = makeSchema({
 		typegen: join(__dirname, '..', 'nexus-typegen.ts'),
 		schema: join(__dirname, '..', 'schema.graphql'),
   },
+
   contextType: {
     module: join(__dirname, './context.ts'),
     export: 'Context'
   },
+	
+	// Make nonNull the default
+	nonNullDefaults: {
+		input: true,
+		output: true
+	}
+
 })
 
 const app = express();

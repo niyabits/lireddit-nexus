@@ -6,4 +6,5 @@ export const GQLDateTime = decorateType(GraphQLDateTime, {
 	asNexusMethod: 'datetime',
 })
 
+export * from './User'
 export * from './Post'

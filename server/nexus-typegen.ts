@@ -29,6 +29,10 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  UsernameAndPassword: { // input type
+    password: string; // String!
+    username: string; // String!
+  }
 }
 
 export interface NexusGenEnums {
@@ -52,6 +56,12 @@ export interface NexusGenObjects {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Query: {};
+  User: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: number; // Int!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    username: string; // String!
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -68,6 +78,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createPost: NexusGenRootTypes['Post']; // Post!
     deletePost: NexusGenRootTypes['Post']; // Post!
+    register: NexusGenRootTypes['User']; // User!
     updatePost: NexusGenRootTypes['Post']; // Post!
   }
   Post: { // field return type
@@ -77,7 +88,13 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Query: { // field return type
-    posts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
+    posts: NexusGenRootTypes['Post'][]; // [Post!]!
+  }
+  User: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    id: number; // Int!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    username: string; // String!
   }
 }
 
@@ -85,6 +102,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createPost: 'Post'
     deletePost: 'Post'
+    register: 'User'
     updatePost: 'Post'
   }
   Post: { // field return type name
@@ -96,6 +114,12 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     posts: 'Post'
   }
+  User: { // field return type name
+    createdAt: 'DateTime'
+    id: 'Int'
+    updatedAt: 'DateTime'
+    username: 'String'
+  }
 }
 
 export interface NexusGenArgTypes {
@@ -105,6 +129,9 @@ export interface NexusGenArgTypes {
     }
     deletePost: { // args
       id: number; // Int!
+    }
+    register: { // args
+      options: NexusGenInputs['UsernameAndPassword']; // UsernameAndPassword!
     }
     updatePost: { // args
       id: number; // Int!
@@ -121,7 +148,7 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
 export type NexusGenEnumNames = never;
 

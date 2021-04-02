@@ -4,12 +4,12 @@ A port of Ben Awad's Fullstack React GraphQL TypeScript App [Lireddit](https://y
 
 ### Generate Migrations
 ```
-npx prisma migrate dev --name init --preview-feature
+yarn create:migrations <migration_name_here>
 ```
 
 ### Generate Prisma Client
 ```
-npx prisma generate
+yarn create:client
 ```
 
 ### Preview the Database with Prisma Studio
