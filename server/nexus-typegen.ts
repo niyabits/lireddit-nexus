@@ -48,6 +48,10 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  FieldError: { // root type
+    field: string; // String!
+    message: string; // String!
+  }
   Mutation: {};
   Post: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -62,6 +66,10 @@ export interface NexusGenObjects {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     username: string; // String!
   }
+  UserResponse: { // root type
+    errors?: NexusGenRootTypes['FieldError'][] | null; // [FieldError!]
+    user?: NexusGenRootTypes['User'] | null; // User
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -75,10 +83,15 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  FieldError: { // field return type
+    field: string; // String!
+    message: string; // String!
+  }
   Mutation: { // field return type
     createPost: NexusGenRootTypes['Post']; // Post!
     deletePost: NexusGenRootTypes['Post']; // Post!
-    register: NexusGenRootTypes['User']; // User!
+    login: NexusGenRootTypes['UserResponse']; // UserResponse!
+    register: NexusGenRootTypes['UserResponse']; // UserResponse!
     updatePost: NexusGenRootTypes['Post']; // Post!
   }
   Post: { // field return type
@@ -96,13 +109,22 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
     username: string; // String!
   }
+  UserResponse: { // field return type
+    errors: NexusGenRootTypes['FieldError'][] | null; // [FieldError!]
+    user: NexusGenRootTypes['User'] | null; // User
+  }
 }
 
 export interface NexusGenFieldTypeNames {
+  FieldError: { // field return type name
+    field: 'String'
+    message: 'String'
+  }
   Mutation: { // field return type name
     createPost: 'Post'
     deletePost: 'Post'
-    register: 'User'
+    login: 'UserResponse'
+    register: 'UserResponse'
     updatePost: 'Post'
   }
   Post: { // field return type name
@@ -120,6 +142,10 @@ export interface NexusGenFieldTypeNames {
     updatedAt: 'DateTime'
     username: 'String'
   }
+  UserResponse: { // field return type name
+    errors: 'FieldError'
+    user: 'User'
+  }
 }
 
 export interface NexusGenArgTypes {
@@ -129,6 +155,9 @@ export interface NexusGenArgTypes {
     }
     deletePost: { // args
       id: number; // Int!
+    }
+    login: { // args
+      options: NexusGenInputs['UsernameAndPassword']; // UsernameAndPassword!
     }
     register: { // args
       options: NexusGenInputs['UsernameAndPassword']; // UsernameAndPassword!
