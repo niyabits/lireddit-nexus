@@ -18,15 +18,21 @@
     "apollo-server": "^2.22.2",
     "apollo-server-express": "^2.22.2",
     "argon2": "^0.27.2",
+    "connect-redis": "^5.1.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "graphql": "^15.5.0",
     "graphql-iso-date": "^3.6.1",
     "graphql-scalars": "^1.9.0",
-    "nexus": "^1.0.0"
+    "nexus": "^1.0.0",
+    "redis": "^3.1.0"
   },
   "devDependencies": {
+    "@types/connect-redis": "^0.0.16",
+    "@types/express-session": "^1.17.3",
     "@types/graphql-iso-date": "^3.4.0",
     "@types/node": "^14.14.37",
+    "@types/redis": "^2.8.28",
     "prisma": "^2.20.1",
     "ts-node-dev": "^1.1.6",
     "typescript": "^4.2.3"

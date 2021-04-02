@@ -101,6 +101,7 @@ export interface NexusGenFieldTypes {
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   Query: { // field return type
+    me: NexusGenRootTypes['User'] | null; // User
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
   }
   User: { // field return type
@@ -134,6 +135,7 @@ export interface NexusGenFieldTypeNames {
     updatedAt: 'DateTime'
   }
   Query: { // field return type name
+    me: 'User'
     posts: 'Post'
   }
   User: { // field return type name

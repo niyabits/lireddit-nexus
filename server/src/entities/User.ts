@@ -5,10 +5,28 @@ export const User = objectType({
 	name: 'User',
 	definition(t) {
 		t.int('id')
+		t.string('username')
 		t.datetime('createdAt')
 		t.datetime('updatedAt')
-		t.string('username')
 	},
+})
+
+export const UserQuery = extendType({
+	type: 'Query',
+	definition(t) {
+		t.nullable.field('me', {
+			type: User,
+			resolve: async (_root, _args, { req, db }) => {
+				// You are not logged in
+				if (!req.session.userId) {
+					return null
+				}
+
+				const user = await db.user.findUnique({ where: { id: req.session.userId } })
+				return user;
+			}
+		})
+	}
 })
 
 export const FieldError = objectType({
@@ -43,7 +61,7 @@ export const UserMutation = extendType({
 			args: {
 				options: 'UsernameAndPassword',
 			},
-			resolve: async (_root, args, ctx) => {
+			resolve: async (_root, args, { db, req }) => {
 				const { options } = args
 
 				if (options.username.length <= 2) {
@@ -71,24 +89,33 @@ export const UserMutation = extendType({
 				const hashedPassword = await argon2.hash(options.password)
 
 				const data = {
-					password: hashedPassword,
 					username: options.username,
+					password: hashedPassword,
 				}
 
+				let user
+
 				try {
-					await ctx.db.user.create({ data })
+					user = await db.user.create({ data })
 				} catch (err) {
 					if (err.code = 'P2002') {
-							return {
-								errors: [{
-									field: "username",
-									message: "username already taken"
-								}]
-							}
+						return {
+							errors: [{
+								field: "username",
+								message: "username already taken"
+							}]
+						}
 					}
 				}
 
-				return { data }
+				// store user id session
+				// this will set a cookie on the user 
+				// keep them logged in
+				if (user) {
+					req.session!.userId = user.id;
+				}
+
+				return { user }
 			}
 		}),
 			t.field('login', {
@@ -96,10 +123,10 @@ export const UserMutation = extendType({
 				args: {
 					options: 'UsernameAndPassword',
 				},
-				resolve: async (_root, args, ctx) => {
+				resolve: async (_root, args, { db, req }) => {
 					const { options } = args
 					const { username, password } = options
-					const user = await ctx.db.user.findUnique({ where: { username } })
+					const user = await db.user.findUnique({ where: { username } })
 
 					if (!user) {
 						return {
@@ -120,6 +147,8 @@ export const UserMutation = extendType({
 								}]
 						}
 					}
+
+					req.session!.userId = user.id;
 
 					return { user }
 				}

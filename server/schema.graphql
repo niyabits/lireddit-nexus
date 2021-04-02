@@ -28,6 +28,7 @@ type Post {
 }
 
 type Query {
+  me: User
   posts: [Post!]!
 }
 
