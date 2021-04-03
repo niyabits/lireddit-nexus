@@ -13,6 +13,8 @@ import redis from 'redis'
 import session from 'express-session'
 import connectRedis from 'connect-redis'
 
+import cors from 'cors'
+
 export const schema = makeSchema({
 	types,
 	outputs: {
@@ -37,6 +39,11 @@ const app = express();
 
 const RedisStore = connectRedis(session)
 const redisClient = redis.createClient()
+
+app.use(cors({
+	origin: 'http://localhost:3000',
+	credentials: true,
+}))
 
 app.use(
 	session({
